@@ -91,6 +91,22 @@ class Flight():
             available_seats=available_seats+sum(seats_not_empties)
         print(available_seats)
 
+    # To use a function outside a class we can pass the function as parameter
+    def make_boarding_cards(self, card_printer):
+        """ Function uses an external function passed as parameter to print each boarding pass 
+            obtain_passengers return a passenger of the plane each time it is called
+        """
+        for name, seat in self.obtain_passengers():
+            card_printer(name, seat, self._number, self._aircraft.model())
+
+    def obtain_passengers(self):
+        """ Each time this function is called will return a passenger and its seat """
+        rows, letters = self._aircraft.seating_plan()
+        for my_row in rows:
+            for my_letter in letters:
+                if not self._seat_empty(my_row,my_letter):
+                    # Return a touple with passenger name and his seat
+                    yield (self._seating[my_row][my_letter], f"{my_row}{my_letter}")
 class Aircraft():
     def __init__(self,registration, model, num_rows, num_seats_per_row):
         self._registration=registration
@@ -113,18 +129,33 @@ class Aircraft():
         # we return a tuple (as an double array with files and colums). Each file contains letters from A to num_seats_per_row
         return (range(1, self._num_rows+1),max_letters[0:self._num_seats_per_row])
 
+# We can define functions outside classes and uses them
+def console_card_printer(passenger, seat, flight_number, aircraft):
+    output = f"| Name: {passenger}" \
+             f"  Flight: {flight_number}" \
+             f"  Seat: {seat}"  \
+             f"  Aircraft: {aircraft}" \
+             " |"
 
+    banner = "+" + "-" * (len(output)-2) + "+"
+    border = "|" + " " * (len(output)-2) + "|"
+    lines = [banner, border, output, border, banner]
+    card = "\n".join(lines)
+    print(card)
+    print()
 
 # Using functions
 if __name__ == '__main__':
     f = Flight('SN056',Aircraft("G-EUPT","Airbus 213",4,5))
-    print(f.aircraft_model())
+    console_card_printer("David Ortiz","12C","SN056","G-EUPT")
+    #print(f.aircraft_model())
     f.allocate_seat("3C","Ana")
     f.allocate_seat("2A","David")
-    f.allocate_seat("4B","Juan")
-    print(f.print_seating_status())
-    #f.allocate_seat("2A","maria")
+    #f.allocate_seat("4B","Juan")
+    #print(f.print_seating_status())
+    ##f.allocate_seat("2A","maria")
     f.reallocate_passenger("3C","4A")
-    f.reallocate_passenger("3C","4D")
-    print(f.print_seating_status())
-    f.num_available_seats()
+    #f.reallocate_passenger("3C","4D")
+    #print(f.print_seating_status())
+    #f.num_available_seats()
+    f.make_boarding_cards(console_card_printer)
