@@ -1,0 +1,6 @@
+# Virtualenvs 
+.env 
+.venv 
+env 
+venv 
+.DS_Store
