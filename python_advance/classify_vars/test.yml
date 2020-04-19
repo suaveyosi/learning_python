@@ -1,0 +1,133 @@
+---
+- name: "Get front apps - Artifactory properties files"
+  become: true
+  find:
+    path:
+      - "{{ role_path }}/vars/common/applications/nginx"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx"
+      - "{{ role_path }}/../manifest/ES-Front"
+      - "{{ role_path }}/../manifest/ES-Alfresco"
+      - "{{ role_path }}/../manifest/ES-RevampMortgages"
+      - "{{ role_path }}/../manifest/ES-DigitalPSD2"
+      - "{{ role_path }}/../manifest/ES-POS"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: front_apps_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- assert:
+    that:
+      - front_apps_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+
+- name: "Get front apps artifactory configuration"
+  become: true
+  include_vars:
+    file: "{{ item.path }}"
+    name: front_apps
+  with_items: "{{ front_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+## end front apps
+##
+## common nginx_instances
+##
+- name: "Get common nginx_instance files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/nginx_instances"
+      - "{{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: nginx_common_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- assert:
+    that:
+      - nginx_common_instances_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+
+- name: "Get common nginx_instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: nginx_common_config
+  with_items: "{{ nginx_common_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+#  end nginx_instance common instances
+#

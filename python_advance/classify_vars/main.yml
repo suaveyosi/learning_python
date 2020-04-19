@@ -1,0 +1,1483 @@
+---
+# Global variables
+- set_fact:
+    configuration_files_path: "{{ role_path }}/files"
+  tags:
+    - variables
+    - service_vars
+    - dg
+    - da
+    - front_nginx
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+    - config_nginx_apps
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg
+    - config_dg_app_properties
+    - install_dg
+    - curator
+    - elk
+    - elk_vars
+    - logstash
+    - kibana
+    - elastic
+    - metricbeat
+    - upgrade_elastic
+    - snapshot_elastic
+    - config_elastic
+    - rabbitmq_vars
+    - redis
+    - esb_deploy
+    - esb_rollback
+    - prometheus
+    - exporters
+    - alertmanager
+    - alertmanager_config
+    - push-gateway
+    - thanos
+    - thanos-sidecar
+    - thanos-query
+    - prom-stack
+    - grafana
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+# end Global variables
+
+# Global Services
+- name: "Load services configuration for '{{ reference_company }}'"
+  include_vars:
+    dir: "{{ reference_company }}/services"
+    ignore_files:
+      - '.gitkeep'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - service_vars
+    - dg
+    - da
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+    - deploy_da
+    - config_da
+    - config_dg
+    - config_dg_app_properties
+    - install_dg
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - curator
+    - elk
+    - elk_vars
+    - logstash
+    - kibana
+    - elastic
+    - metricbeat
+    - upgrade_elastic
+    - snapshot_elastic
+    - config_elastic
+    - rabbitmq_vars
+    - redis
+    - esb_deploy
+    - esb_rollback
+    - prometheus
+    - exporters
+    - alertmanager
+    - alertmanager_config
+    - push-gateway
+    - thanos
+    - thanos-sidecar
+    - thanos-query
+    - prom-stack
+    - grafana
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+# end global services
+# Front  applications
+#
+- name: "Get front apps - Artifactory properties files"
+  become: true
+  find:
+    path:
+      - "{{ role_path }}/vars/common/applications/nginx"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx"
+      - "{{ role_path }}/../manifest/ES-Front"
+      - "{{ role_path }}/../manifest/ES-Alfresco"
+      - "{{ role_path }}/../manifest/ES-RevampMortgages"
+      - "{{ role_path }}/../manifest/ES-DigitalPSD2"
+      - "{{ role_path }}/../manifest/ES-POS"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: front_apps_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- assert:
+    that:
+      - front_apps_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+
+- name: "Get front apps artifactory configuration"
+  become: true
+  include_vars:
+    file: "{{ item.path }}"
+    name: front_apps
+  with_items: "{{ front_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+## end front apps
+#
+
+##
+## common nginx_instances
+##
+- name: "Get common nginx_instance files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/nginx_instances"
+      - "{{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: nginx_common_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- assert:
+    that:
+      - nginx_common_instances_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+
+- name: "Get common nginx_instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: nginx_common_config
+  with_items: "{{ nginx_common_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+#  end nginx_instance common instances
+#
+
+# nginx_instance of an environment
+- name: "Get nginx_instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: nginx_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- assert:
+    that:
+      - nginx_instances_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+- name: "Get nginx_instances configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: nginx_instances
+  with_items: "{{ nginx_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - front_nginx
+    - config_nginx_apps
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - install_nginx
+    - config_nginx
+# End nginx_instance of an environment
+
+#
+# common jboss_instances
+#
+- name: "Get common jboss_instance files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}"
+      - "{{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: jboss_common_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+    - metrics
+
+- assert:
+    that:
+      - jboss_common_instances_files.keys() | length > 0
+  when:
+    - "jboss_common_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+
+- name: "Get common jboss_instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: jboss_common_config
+  with_items: "{{ jboss_common_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "jboss_common_instances_files is defined"
+    - "jboss_common_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+#  end jboss_instance common
+#
+
+# jboss Apps (dg,da) properties
+#
+- name: "Get apps artifactory properties files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/jboss/{{ instance_type }}"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}"
+      - "{{ role_path }}/../manifest/ES-DG"
+      - "{{ role_path }}/../manifest/ES-API"
+      - "{{ role_path }}/../manifest/ES-DA"
+      - "{{ role_path }}/../manifest/ES-Mailroom"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: jboss_apps_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+- assert:
+    that:
+      - jboss_apps_files.keys() | length > 0
+  when:
+    - "jboss_apps_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+
+- name: "Get apps artifactory configuration"
+  become: true
+  include_vars:
+    file: "{{ item.path }}"
+    name: jboss_apps
+  with_items: "{{ jboss_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "jboss_apps_files is defined"
+    - "jboss_apps_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+# end jboss Apps (dg,da) properties
+#
+
+#
+# jboss_instance of an environment
+- name: "Get jboss instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: jboss_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+- assert:
+    that:
+      - jboss_instances_files.keys() | length > 0
+  when:
+    - "jboss_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+
+- name: "Get jboss Instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: jboss_instances
+  with_items: "{{ jboss_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "jboss_instances_files is defined"
+    - "jboss_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - deploy_da
+    - config_da
+    - metrics
+    - install_da
+    - deploy_dg
+    - deploy_pdfs_dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - install_dg
+    - dg
+    - da
+    - cmdb
+# End jboss instances of an environment
+#
+
+## F2E
+
+- name: "Get f2e apps config files"
+  become: true
+  find:
+    paths:
+    - "{{ role_path }}/vars/common/applications/f2e"
+    - "{{ role_path }}/vars/{{ reference_company }}/applications/f2e"
+    - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/f2e"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: f2e_apps_files
+  delegate_to: "127.0.0.1"
+  tags:
+    - f2e_vars
+
+- assert:
+    that:
+      - f2e_apps_files.keys() | length > 0
+  when:
+    - "f2e_apps_files is defined"
+  tags:
+  - f2e_vars
+
+- name: "Get f2e apps configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: f2e_apps
+  with_items: "{{ f2e_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "f2e_apps_files is defined"
+    - "f2e_apps_files.files is defined"
+  tags:
+  - f2e_vars
+
+# F2E END
+
+## ESB
+
+- name: "Get esb apps config files"
+  become: true
+  find:
+    paths:
+    - "{{ role_path }}/vars/common/applications/esb"
+    - "{{ role_path }}/vars/{{ reference_company }}/applications/esb"
+    - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/esb"
+    - "{{ role_path }}/../manifest/ES-ESB"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: esb_apps_files
+  delegate_to: "127.0.0.1"
+  tags:
+    - esb_deploy
+    - esb_rollback
+
+- assert:
+    that:
+      - esb_apps_files.keys() | length > 0
+  when:
+    - "esb_apps_files is defined"
+  tags:
+    - esb_deploy
+    - esb_rollback
+
+- name: "Get esb apps configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: esb_apps
+  with_items: "{{ esb_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "esb_apps_files is defined"
+    - "esb_apps_files.files is defined"
+  tags:
+    - esb_deploy
+    - esb_rollback
+
+# ESB END
+
+
+# Checker
+
+- name: "ATM Checker application"
+  include_vars:
+    dir: "{{item}}"
+    ignore_files:
+      - .gitkeep
+    name: checker
+  with_items:
+    - "common/applications/jboss_instances/checker"
+    - "{{reference_company}}/environments/{{reference_environment}}/jboss_instances/checker"
+  ignore_errors: true
+  tags:
+    - checker
+    - checker-server
+    - checker-gateway
+
+# Checker gateway
+
+- name: "ATM Checker gateway"
+  include_vars:
+    dir: "{{item}}"
+    ignore_files:
+      - .gitkeep
+  with_items:
+    - "{{reference_company}}/services/checker-gateway"
+    - "{{reference_company}}/environments/{{reference_environment}}/checker-gateway"
+  ignore_errors: True
+  tags:
+    - checker
+    - checker-gateway
+
+- name: "ELK Apps configuration"
+  include_vars:
+    dir: "{{ item }}"
+    ignore_files:
+      - '.gitkeep'
+  with_items:
+    - "common/services/elk"
+    - "{{ reference_company }}/services/elk"
+    - "{{ reference_company }}/environments/{{ reference_environment }}/elk"
+    - "{{ reference_company }}/environments/{{ reference_environment }}/elk_password"
+  ignore_errors: true
+  tags:
+    - variables
+    - elk
+    - curator
+    - elk_vars
+    - logstash
+    - kibana
+    - elastic
+    - metricbeat
+    - config_elastic
+    - upgrade_elastic
+    - snapshot_elastic
+
+# Datasources of DG Apps
+#
+- name: "Get datasources config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/services/datasources"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: jboss_datasources_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+- assert:
+    that:
+      - jboss_datasources_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+
+
+- name: "Get datasources configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: datasources
+  with_items: "{{ jboss_datasources_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "jboss_datasources_files is defined"
+    - "jboss_datasources_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+- assert:
+    that:
+      - datasources.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - cmdb
+    - dg
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+
+# end Datasources of DG Apps
+#
+
+
+# Application-policies of DG,DA instances
+#
+
+- name: "Get application-policies config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/services/application-policies"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: jboss_application_policies_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - dg
+    - da
+    - config_da
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - metrics
+    - cmdb
+- assert:
+    that:
+      - jboss_application_policies_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - dg
+    - da
+    - config_da
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - metrics
+    - cmdb
+
+
+- name: "Get application_policies configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: application_policies
+  with_items: "{{ jboss_application_policies_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "jboss_application_policies_files is defined"
+    - "jboss_application_policies_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - dg
+    - da
+    - config_da
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - metrics
+    - cmdb
+- assert:
+    that:
+      - application_policies.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - dg
+    - da
+    - config_da
+    - datasource_stats_dg
+    - config_dg_app_properties
+    - config_dg
+    - cmdb
+
+- name: "Get prometheus exporters configuration"
+  include_vars:
+    dir: "{{ item }}"
+    ignore_files:
+      - '.gitkeep'
+  with_items:
+    - "common/services/prometheus_exporters"
+  ignore_errors: true
+  tags:
+    - variables
+    - metrics
+    - config_da
+    - da
+    - datasource_stats_dg
+    - config_dg
+
+# end Application-policies of DG,DA instances
+#
+
+- name: "RabbitMQ App configuration"
+  include_vars:
+    dir: "{{ item }}"
+    name: rabbitmq_apps
+    ignore_files:
+      - '.gitkeep'
+  with_items:
+    - "common/services/rabbitmq"
+    - "{{ reference_company }}/services/rabbitmq"
+    - "{{ reference_company }}/environments/{{ reference_environment }}/rabbitmq_instances"
+  ignore_errors: true
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - rabbitmq_vars
+- assert:
+    that:
+      - rabbitmq_apps.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - rabbitmq_vars
+
+- name: "redis configuration"
+  include_vars:
+    dir: "{{ item }}"
+    ignore_files:
+      - '.gitkeep'
+  with_items:
+    - "{{ reference_company }}/services/redis"
+    - "{{ reference_company }}/environments/{{ reference_environment }}/redis"
+  ignore_errors: true
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - redis
+
+
+#
+# tomcat_instance of an environment
+- name: "Get hippo instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/tomcat_instances"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/tomcat_instances"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: hippo_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - hippo
+
+- assert:
+    that:
+      - hippo_instances_files.keys() | length > 0
+  when:
+    - "hippo_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - hippo
+
+- name: "Get hippo Instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: hippo_instances
+  with_items: "{{ hippo_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "hippo_instances_files is defined"
+    - "hippo_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - hippo
+# End hippo instances of an environment
+#
+
+###########################
+#       Prometheus        #
+###########################
+
+- name: "Prometheus variables"
+  include_vars:
+    dir: "{{ item }}"
+    ignore_files:
+      - '.gitkeep'
+  loop:
+    - "{{ reference_company }}/environments/{{ reference_environment }}/prometheus"
+  ignore_errors: true
+  tags:
+    - variables
+    - prom-stack
+    - prometheus
+    - exporters
+    - alertmanager
+    - alertmanager_config
+    - push-gateway
+    - thanos
+    - thanos-sidecar
+    - thanos-query
+
+- name: "Grafana variables"
+  include_vars:
+    dir: "{{ item }}"
+    ignore_files:
+      - '.gitkeep'
+  loop:
+    - "{{ reference_company }}/environments/{{ reference_environment }}/grafana"
+  ignore_errors: true
+  tags:
+    - variables
+    - prom-stack
+    - grafana
+
+###########################
+#     JAVA INSTANCES      #
+###########################
+
+#
+# common java_instances
+#
+- name: "Get common java_instance files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}"
+      - "{{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: java_common_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+- assert:
+    that:
+      - java_common_instances_files.keys() | length > 0
+  when:
+    - "java_common_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+- name: "Get common java_instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: java_common_config
+  with_items: "{{ java_common_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "java_common_instances_files is defined"
+    - "java_common_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+#  end java_instance common
+#
+
+# java Apps (merak,f2e) properties
+#
+- name: "Get apps artifactory properties files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/java/{{ instance_type }}"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}"
+      - "{{ role_path }}/../manifest/ES-DailyBanking"
+      - "{{ role_path }}/../manifest/ES-F2E"
+      - "{{ role_path }}/../manifest/ES-Digital"
+      - "{{ role_path }}/../manifest/ES-PlatformsIntegration"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: java_apps_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+- assert:
+    that:
+      - java_apps_files.keys() | length > 0
+  when:
+    - "java_apps_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+- name: "Get apps artifactory configuration"
+  become: true
+  include_vars:
+    file: "{{ item.path }}"
+    name: java_apps
+  with_items: "{{ java_apps_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "java_apps_files is defined"
+    - "java_apps_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+# end java Apps (merak,f2e) properties
+#
+
+#
+# java_instance of an environment
+- name: "Get java instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: java_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - auditd
+
+# java_instance of an environment
+- name: "Get java instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }}"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: java_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  when:
+    - "instance_type is defined"
+  tags:
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+- assert:
+    that:
+      - java_instances_files.keys() | length > 0
+  when:
+    - "java_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+- name: "Get java Instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: java_instances
+  with_items: "{{ java_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "java_instances_files is defined"
+    - "java_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - merak
+    - deploy_merak
+    - install_merak
+    - configure_merak
+    - f2e
+    - deploy_f2e
+    - install_f2e
+    - configure_f2e
+    - auditd
+
+# End java instances of an environment
+#
+
+########################
+#                      #
+#    APP_CONFIG        #
+#                      #
+########################
+
+- name: "Get application configs"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/application-config"
+      - "{{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: application_config_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - front_nginx
+    - metrics
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - config_nginx
+    - config_nginx_apps
+    - install_nginx
+- assert:
+    that:
+      - application_config_files.keys() | length > 0
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - front_nginx
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - metrics
+    - config_nginx
+    - config_nginx_apps
+    - install_nginx
+- name: "Get application configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: application_config
+  with_items: "{{ application_config_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - variables
+    - metrics
+    - front_nginx
+    - deploy_nginx
+    - deploy_nginx_apps
+    - deploy_nginx_mkt
+    - config_nginx
+    - config_nginx_apps
+    - install_nginx
+
+#############################
+#     INSTANCE MANAGER      #
+#############################
+
+#
+# common instance_manager
+#
+- name: "Get common instance_manager files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/instance-manager"
+      - "{{ role_path }}/vars/common/environments/{{ reference_environment }}/instance-manager"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: instance_manager_common_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- assert:
+    that:
+      - instance_manager_common_instances_files.keys() | length > 0
+  when:
+    - "instance_manager_common_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- name: "Get common instance_manager configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: imanager_common_config
+  with_items: "{{ instance_manager_common_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "instance_manager_common_instances_files is defined"
+    - "instance_manager_common_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+#  end instance_manager common
+#
+
+# instance_manager instances configuration
+#
+- name: "Get instance-manager artifactory properties files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/common/applications/instance-manager"
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: instance_manager_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- assert:
+    that:
+      - instance_manager_files.keys() | length > 0
+  when:
+    - "instance_manager_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- name: "Get instance-manager artifactory configuration"
+  become: true
+  include_vars:
+    file: "{{ item.path }}"
+    name: instance_manager_apps
+  with_items: "{{ instance_manager_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "instance_manager_apps_files is defined"
+    - "instance_manager_apps_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+# end instance_manager instances configuration
+#
+
+#
+# instance_manager of an environment
+- name: "Get instance-manager instance config files"
+  become: true
+  find:
+    paths:
+      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager"
+    recurse: yes
+    file_type: file
+    patterns: "*.yml,*.yaml,*.json"
+  register: instance_manager_instances_files
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- assert:
+    that:
+      - instance_manager_instances_files.keys() | length > 0
+  when:
+    - "instance_manager_instances_files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+- name: "Get instance-manager Instance configuration"
+  include_vars:
+    file: "{{ item.path }}"
+    name: imanager_instances
+  with_items: "{{ instance_manager_instances_files.files }}"
+  loop_control:
+    label: '{{ item.path }}'
+  when:
+    - "instance_manager_instances_files is defined"
+    - "instance_manager_instances_files.files is defined"
+  delegate_to: "127.0.0.1"
+  run_once: true
+  tags:
+    - instance-manager
+    - deploy_instance-manager
+    - install_instance-manager
+    - configure_instance-manager
+
+# End instance_manager of an environment
+#
