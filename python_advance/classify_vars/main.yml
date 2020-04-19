@@ -1171,27 +1171,6 @@
   become: true
   find:
     paths:
-      - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}"
-    recurse: yes
-    file_type: file
-    patterns: "*.yml,*.yaml,*.json"
-  register: java_instances_files
-  delegate_to: "127.0.0.1"
-  run_once: true
-  when:
-    - "instance_type is defined"
-  tags:
-    - merak
-    - deploy_merak
-    - install_merak
-    - configure_merak
-    - auditd
-
-# java_instance of an environment
-- name: "Get java instance config files"
-  become: true
-  find:
-    paths:
       - "{{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }}"
     recurse: yes
     file_type: file
