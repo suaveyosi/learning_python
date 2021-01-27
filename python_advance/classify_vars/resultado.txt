@@ -1,0 +1,520 @@
++----------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+|            TAG             |      Diccionario       |                                                                    Paths                                                                     |
++----------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+|         variables          |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|         variables          |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|         variables          |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|         variables          |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|         variables          |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|         variables          |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|             dg             |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|             dg             |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|             dg             |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|             dg             |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|             dg             |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|             da             |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|             da             |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|             da             |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|             da             |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|        front_nginx         |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|        front_nginx         |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|        front_nginx         |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|        front_nginx         |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|        deploy_nginx        |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|        deploy_nginx        |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|        deploy_nginx        |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|        deploy_nginx        |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|     deploy_nginx_apps      |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|     deploy_nginx_apps      |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|     deploy_nginx_apps      |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|     deploy_nginx_apps      |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|      deploy_nginx_mkt      |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|      deploy_nginx_mkt      |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|      deploy_nginx_mkt      |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|      deploy_nginx_mkt      |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|       install_nginx        |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|       install_nginx        |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|       install_nginx        |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|       install_nginx        |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|        config_nginx        |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|        config_nginx        |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|        config_nginx        |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|        config_nginx        |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|     config_nginx_apps      |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|     config_nginx_apps      |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|     config_nginx_apps      |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|     config_nginx_apps      |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|         deploy_da          |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         deploy_da          |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         deploy_da          |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|         config_da          |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         config_da          |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         config_da          |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|         config_da          |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|          metrics           |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|          metrics           |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|          metrics           |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|          metrics           |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|          metrics           |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|          metrics           |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|          metrics           |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|          metrics           |   application_config   |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/application-config                                                |
+|                            |                        |                            {{ role_path }}/vars/inges/environments/{{ reference_environment }}/application-config                            |
+|         install_da         |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         install_da         |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         install_da         |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|         deploy_dg          |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         deploy_dg          |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         deploy_dg          |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|       deploy_pdfs_dg       |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|       deploy_pdfs_dg       |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|       deploy_pdfs_dg       |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|    datasource_stats_dg     |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|    datasource_stats_dg     |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|    datasource_stats_dg     |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|    datasource_stats_dg     |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|    datasource_stats_dg     |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|         config_dg          |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         config_dg          |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         config_dg          |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|         config_dg          |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|         config_dg          |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|  config_dg_app_properties  |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|  config_dg_app_properties  |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|  config_dg_app_properties  |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|  config_dg_app_properties  |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|         install_dg         |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|         install_dg         |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|         install_dg         |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|         esb_deploy         |        esb_apps        |                                                                                                                                              |
+|                            |                        |                                                 {{ role_path }}/vars/common/applications/esb                                                 |
+|                            |                        |                                        {{ role_path }}/vars/{{ reference_company }}/applications/esb                                         |
+|                            |                        |                          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/esb                           |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-ESB                                                      |
+|        esb_rollback        |        esb_apps        |                                                                                                                                              |
+|                            |                        |                                                 {{ role_path }}/vars/common/applications/esb                                                 |
+|                            |                        |                                        {{ role_path }}/vars/{{ reference_company }}/applications/esb                                         |
+|                            |                        |                          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/esb                           |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-ESB                                                      |
+|           merak            |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|           merak            |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|        deploy_merak        |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|        deploy_merak        |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|       install_merak        |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|       install_merak        |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|      configure_merak       |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|      configure_merak       |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|            f2e             |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|            f2e             |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|            f2e             |     java_instances     |                                                                                                                                              |
+|                            |                        | {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }} |
+|         deploy_f2e         |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|         deploy_f2e         |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|         deploy_f2e         |     java_instances     |                                                                                                                                              |
+|                            |                        | {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }} |
+|        install_f2e         |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|        install_f2e         |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|        install_f2e         |     java_instances     |                                                                                                                                              |
+|                            |                        | {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }} |
+|       configure_f2e        |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|       configure_f2e        |       java_apps        |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/java/{{ instance_type }}                                       |
+|                            |                        |                {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java/{{ instance_type }}                |
+|                            |                        |                                                 {{ role_path }}/../manifest/ES-DailyBanking                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-F2E                                                      |
+|                            |                        |                                                    {{ role_path }}/../manifest/ES-Digital                                                    |
+|                            |                        |                                             {{ role_path }}/../manifest/ES-PlatformsIntegration                                              |
+|       configure_f2e        |     java_instances     |                                                                                                                                              |
+|                            |                        | {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }} |
+|           auditd           |   java_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/java_instances/{{ instance_type }}                                  |
+|                            |                        |                    {{ role_path }}/vars/common/environments/{{ reference_environment }}/java_instances/{{ instance_type}}                    |
+|           auditd           |     java_instances     |                                                                                                                                              |
+|                            |                        | {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/java_instances/{{ instance_type }}/{{ ansible_limit }} |
+|      instance-manager      | imanager_common_config |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}/instance-manager                             |
+|      instance-manager      | instance_manager_apps  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|      instance-manager      |   imanager_instances   |                                                                                                                                              |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|  deploy_instance-manager   | imanager_common_config |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}/instance-manager                             |
+|  deploy_instance-manager   | instance_manager_apps  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|  deploy_instance-manager   |   imanager_instances   |                                                                                                                                              |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|  install_instance-manager  | imanager_common_config |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}/instance-manager                             |
+|  install_instance-manager  | instance_manager_apps  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|  install_instance-manager  |   imanager_instances   |                                                                                                                                              |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+| configure_instance-manager | imanager_common_config |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}/instance-manager                             |
+| configure_instance-manager | instance_manager_apps  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/instance-manager                                           |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+| configure_instance-manager |   imanager_instances   |                                                                                                                                              |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/instance-manager                    |
+|            cmdb            |       front_apps       |                                                                                                                                              |
+|                            |                        |                                                {{ role_path }}/vars/common/applications/nginx                                                |
+|                            |                        |                         {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx                          |
+|                            |                        |                                                     {{ role_path }}/../manifest/ES-Front                                                     |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Alfresco                                                    |
+|                            |                        |                                                {{ role_path }}/../manifest/ES-RevampMortgages                                                |
+|                            |                        |                                                  {{ role_path }}/../manifest/ES-DigitalPSD2                                                  |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-POS                                                      |
+|            cmdb            |  nginx_common_config   |                                                                                                                                              |
+|                            |                        |                                           {{ role_path }}/vars/common/applications/nginx_instances                                           |
+|                            |                        |                            {{ role_path }}/vars/common/environments/{{ reference_environment }}//nginx_instances                             |
+|            cmdb            |    nginx_instances     |                                                                                                                                              |
+|                            |                        |                                  {{ role_path }}/vars/{{ reference_company }}/applications/nginx_instances                                   |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/nginx_instances                     |
+|            cmdb            |  jboss_common_config   |                                                                                                                                              |
+|                            |                        |                                 {{ role_path }}/vars/common/applications/jboss_instances/{{ instance_type }}                                 |
+|                            |                        |                   {{ role_path }}/vars/common/environments/{{ reference_environment }}/jboss_instances/{{ instance_type}}                    |
+|            cmdb            |       jboss_apps       |                                                                                                                                              |
+|                            |                        |                                      {{ role_path }}/vars/common/applications/jboss/{{ instance_type }}                                      |
+|                            |                        |               {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss/{{ instance_type }}                |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DG                                                       |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-API                                                      |
+|                            |                        |                                                      {{ role_path }}/../manifest/ES-DA                                                       |
+|                            |                        |                                                   {{ role_path }}/../manifest/ES-Mailroom                                                    |
+|            cmdb            |    jboss_instances     |                                                                                                                                              |
+|                            |                        |                        {{ role_path }}/vars/{{ reference_company }}/applications/jboss_instances/{{ instance_type }}                         |
+|                            |                        |          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/jboss_instances/{{ instance_type }}           |
+|            cmdb            |      datasources       |                                                                                                                                              |
+|                            |                        |                                               {{ role_path }}/vars/common/services/datasources                                               |
+|                            |                        |                      {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/datasources                       |
+|            cmdb            |  application_policies  |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/services/application-policies                                           |
+|                            |                        |                  {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/application-policies                  |
+|          f2e_vars          |        f2e_apps        |                                                                                                                                              |
+|                            |                        |                                                 {{ role_path }}/vars/common/applications/f2e                                                 |
+|                            |                        |                                        {{ role_path }}/vars/{{ reference_company }}/applications/f2e                                         |
+|                            |                        |                          {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/f2e                           |
+|           hippo            |    hippo_instances     |                                                                                                                                              |
+|                            |                        |                                          {{ role_path }}/vars/common/applications/tomcat_instances                                           |
+|                            |                        |                    {{ role_path }}/vars/{{ reference_company }}/environments/{{ reference_environment }}/tomcat_instances                    |
++----------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------+

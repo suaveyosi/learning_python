@@ -1,0 +1,102 @@
+# Equifax was created before our QA environment, that is the reason why it has a pre* name. Our QA environment replaces previous PRE environment
+[dg_equifax]
+prejbfax1
+
+[dg_genoma]
+qajboss101_gen ansible_host=qajboss101
+qajboss102_gen ansible_host=qajboss102
+
+[dg_metascan]
+#qajboss101_met ansible_host=qajboss101
+#qajboss102_met ansible_host=qajboss102
+
+[dg_IDEsBMB]
+#qajboss101_BMB ansible_host=qajboss101
+#qajboss102_BMB ansible_host=qajboss102
+
+[dg_IDEsBPM]# Only one instance active (1)
+qajboss101_BPM ansible_host=qajboss101
+#qajboss102_BPM ansible_host=qajboss102
+
+[dg_IDEsINT]
+qajboss101_INT ansible_host=qajboss101
+qajboss102_INT ansible_host=qajboss102
+
+[dg_IDEs]
+qajboss101_IDEs ansible_host=qajboss101
+qajboss102_IDEs ansible_host=qajboss102
+
+[dg_SMEsINT]
+qajboss101_SMEsINT ansible_host=qajboss101
+qajboss102_SMEsINT ansible_host=qajboss102
+
+[dg_SMEs]
+qajboss101_SMEs ansible_host=qajboss101
+qajboss102_SMEs ansible_host=qajboss102
+
+[dg_databus_client]
+#qajboss101_datacli ansible_host=qajboss101
+#qajboss102_datacli ansible_host=qajboss102
+
+[dg_IDEsATM]
+qajboss101_IDEsATM ansible_host=qajboss101
+qajboss102_IDEsATM ansible_host=qajboss102
+
+[dg_IDEsBATCH]
+#qajboss101_IDEsBATCH ansible_host=qajboss101
+#qajboss102_IDEsBATCH ansible_host=qajboss102
+
+[dg_IDEsMR2_PAF]
+#qajboss101_IDEsMR2_PAF ansible_host=qajboss101
+#qajboss102_IDEsMR2_PAF ansible_host=qajboss102
+
+[dg_SMEsBATCH] # Only one instance active (1)
+qajboss101_SMEsBATCH ansible_host=qajboss101
+#qajboss102_SMEsBATCH ansible_host=qajboss102
+
+[dg_chat_proactivo]
+#qajboss101_chat ansible_host=qajboss101
+#qajboss102_chat ansible_host=qajboss102
+
+[dg_debitcard]
+qajboss101_debit ansible_host=qajboss101
+qajboss102_debit ansible_host=qajboss102
+
+[dg_minreg]
+#qajboss101_minreg ansible_host=qajboss101
+#qajboss102_minreg ansible_host=qajboss102
+
+[dg_renta4]
+qajboss101_renta4 ansible_host=qajboss101
+qajboss102_renta4 ansible_host=qajboss102
+
+[dg_statusline]
+#qajboss101_statusline ansible_host=qajboss101
+#qajboss102_statusline ansible_host=qajboss102
+
+[all_jboss_instances_dg:children]
+# IMPORTANT: we comment equifax for prevent it from failing when deploying our new DGs
+#dg_equifax
+dg_genoma
+dg_metascan
+dg_IDEsBMB
+dg_IDEsBPM
+dg_IDEsINT
+dg_IDEs
+dg_SMEsINT
+dg_SMEs
+dg_databus_client
+dg_IDEsATM
+dg_IDEsBATCH
+dg_IDEsMR2_PAF
+dg_SMEsBATCH
+dg_chat_proactivo
+dg_debitcard
+dg_minreg
+dg_renta4
+dg_statusline
+
+[all_jboss_instances_dg:vars]
+reference_environment=qa
+environment_name=qa
+num_cache_files=2
